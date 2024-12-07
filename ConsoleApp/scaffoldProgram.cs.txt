@@ -1,0 +1,42 @@
+﻿using System.Diagnostics;
+
+Stopwatch sw = new();
+sw.Start();
+
+// Read the file
+const bool IS_TEST = false;
+
+StreamReader stream = IS_TEST switch
+{
+    true => new("..\\..\\..\\res\\sample01.txt"),
+    _ => new("..\\..\\..\\res\\input01.txt"),
+};
+
+string? line;
+
+while ((line = stream.ReadLine()) != null)
+{
+    if (string.IsNullOrWhiteSpace(line)) continue;
+
+}
+
+
+
+Console.WriteLine($"Map loaded in {sw.ElapsedMilliseconds}ms");
+sw.Restart();
+
+
+// PART 1
+var sum = 0;
+
+Console.WriteLine($"Part 1 sum: {sum}");
+Console.WriteLine($"Part 1 ran in {sw.ElapsedMilliseconds}ms");
+sw.Restart();
+
+// PART 2
+sum = 0;
+
+
+Console.WriteLine($"Part 2 sum: {sum}");
+Console.WriteLine($"Part 2 ran in {sw.ElapsedMilliseconds}ms");
+sw.Stop();

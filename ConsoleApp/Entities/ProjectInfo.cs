@@ -13,11 +13,14 @@
     public string SamplePath => Path.Combine(ResourcesFolderPath, "sample01.txt");
     public string InputPath => Path.Combine(ResourcesFolderPath, "input01.txt");
 
+    public string ConsoleProjectFolderPath { get; init; }
+
 
     public ProjectInfo()
     {
         SolutionFolderPath = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.Parent!.Parent!.FullName;
         SourceFolderPath = Path.Combine(SolutionFolderPath, "src");
+        ConsoleProjectFolderPath = Path.Combine(SolutionFolderPath, "ConsoleApp");
         Day = ReadLineCurrentDay();
         ProjectFolderPath = Path.Combine(SourceFolderPath, ProjectName);
     }

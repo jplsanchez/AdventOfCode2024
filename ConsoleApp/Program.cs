@@ -1,6 +1,4 @@
-﻿
-using Microsoft.Extensions.Configuration;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 Console.WriteLine("###############################################");
 Console.WriteLine("### Advent of Code 2024  - Folder Generator ###");
@@ -25,6 +23,9 @@ if (!Directory.Exists(info.ProjectFolderPath))
 
     Helper.RunCmd($"dotnet sln {info.SolutionPath} add {info.ProjectPath}", info.ProjectFolderPath);
     Console.WriteLine($"Project added to solution: {info.ProjectName}");
+
+    // Change Program.cs to the scaffold
+    File.WriteAllText(Path.Combine(info.ProjectFolderPath, "Program.cs"), File.ReadAllText(Path.Combine(info.ConsoleProjectFolderPath, "scaffoldProgram.cs.txt")));
 }
 else Console.WriteLine($"Project already exists: {info.ProjectName}");
 
