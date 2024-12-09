@@ -4,7 +4,7 @@ Stopwatch sw = new();
 sw.Start();
 
 // Read the file
-const bool IS_TEST = false;
+const bool IS_TEST = true;
 
 StreamReader stream = IS_TEST switch
 {
