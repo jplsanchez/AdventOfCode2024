@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 
 Console.WriteLine("###############################################");
 Console.WriteLine("### Advent of Code 2024  - Folder Generator ###");
