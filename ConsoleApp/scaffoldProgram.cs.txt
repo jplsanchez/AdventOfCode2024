@@ -4,7 +4,11 @@ Stopwatch sw = new();
 sw.Start();
 
 // Read the file
-const bool IS_TEST = true;
+# if (DEBUG)
+        const bool IS_TEST = true;
+#else
+        const bool IS_TEST = false;
+#endif
 
 StreamReader stream = IS_TEST switch
 {
@@ -27,7 +31,7 @@ sw.Restart();
 
 
 // PART 1
-var sum = 0;
+long sum = 0;
 
 Console.WriteLine($"Part 1 sum: {sum}");
 Console.WriteLine($"Part 1 ran in {sw.ElapsedMilliseconds}ms");
