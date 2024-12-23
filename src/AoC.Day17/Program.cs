@@ -1,11 +1,16 @@
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
+
 Stopwatch sw = new();
 sw.Start();
 
 // Read the file
+#if (DEBUG)
 const bool IS_TEST = true;
+#else
+const bool IS_TEST = false;
+#endif
 
 StreamReader stream = IS_TEST switch
 {
@@ -27,7 +32,6 @@ while ((line = stream.ReadLine()) != null)
 }
 
 
-
 Console.WriteLine($"Map loaded in {sw.ElapsedMilliseconds}ms");
 sw.Restart();
 
@@ -43,9 +47,19 @@ Console.WriteLine($"Part 1 ran in {sw.ElapsedMilliseconds}ms");
 sw.Restart();
 
 // PART 2
-result = string.Empty;
 
+string programAsString = string.Join(",", program);
+string output = string.Empty;
+registers.A = 0;
 
-Console.WriteLine($"Part 2 result: {result}");
+while (output != programAsString)
+{
+    registers.A++;
+    computer = new(registers, program);
+    output = string.Join(",", computer.Run());
+}
+
+Console.WriteLine($"Part 2 Lowest A is: {registers.A}");
 Console.WriteLine($"Part 2 ran in {sw.ElapsedMilliseconds}ms");
 sw.Stop();
+

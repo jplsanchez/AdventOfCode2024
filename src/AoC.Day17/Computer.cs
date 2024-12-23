@@ -3,9 +3,12 @@
     int _instructionPointer = 0;
 
     (uint A, uint B, uint C) _registers;
+    public (uint A, uint B, uint C) Registers => _registers;
+
 
     List<uint> _program;
     List<uint> _output = [];
+    public List<uint> Output => _output;
 
     public Computer((uint A, uint B, uint C) registers, IEnumerable<uint> program)
     {
@@ -21,7 +24,7 @@
 
             uint operand = (opCode, _program[_instructionPointer + 1]) switch
             {
-                (OpCode code, uint value) when !code.IsLiteral() => value,
+                (OpCode code, uint value) when code.IsLiteral() => value,
                 (_, uint value) when value <= 3 => value,
                 (_, 4) => _registers.A,
                 (_, 5) => _registers.B,
@@ -37,7 +40,7 @@
         return _output;
     }
 
-    public void ExecuteInstruction(OpCode opCode, uint operand)
+    private void ExecuteInstruction(OpCode opCode, uint operand)
     {
         switch (opCode)
         {
@@ -48,7 +51,7 @@
                 _registers.B ^= operand;
                 break;
             case OpCode.BST:
-                _registers.B %= 8;
+                _registers.B = operand % 8;
                 break;
             case OpCode.JNZ:
                 if (_registers.A != 0) _instructionPointer = (int)operand - 2;
@@ -57,7 +60,7 @@
                 _registers.B ^= _registers.C;
                 break;
             case OpCode.OUT:
-                _output.Add(_registers.B % 8);
+                _output.Add(operand % 8);
                 break;
             case OpCode.BDV:
                 _registers.B = _registers.A / (uint)Math.Pow(2, operand);
@@ -69,7 +72,34 @@
                 throw new InvalidOperationException("Invalid opcode");
         }
     }
+
+    public void Print()
+    {
+        Console.WriteLine($"A: {_registers.A}, B: {_registers.B}, C: {_registers.C}, Output: {string.Join(", ", _output)}");
+    }
 }
+
+public class ReversedComputer
+{
+    int _instructionPointer = 0;
+
+    (uint A, uint B, uint C) _registers;
+    public (uint A, uint B, uint C) Registers => _registers;
+
+
+    List<uint> _program;
+    List<uint> _output = [];
+    public List<uint> Output => _output;
+
+    public ReversedComputer((uint A, uint B, uint C) registers, IEnumerable<uint> program)
+    {
+        _registers = registers;
+        _program = [.. program];
+        _output = [.. program];
+    }
+}
+
+
 public enum OpCode
 {
     ADV = 0, // division => A/(2^COMBO) -> A [Truncated]
@@ -81,8 +111,6 @@ public enum OpCode
     BDV = 6, // division => A/(2^COMBO) -> B [Truncated]
     CDV = 7 // division => A/(2^COMBO) -> C [Truncated]
 }
-
-
 static class OpCodeMethods
 {
     public static bool IsCombo(this OpCode opCode) => opCode is OpCode.ADV or OpCode.BST or OpCode.OUT or OpCode.BDV or OpCode.CDV;
